@@ -171,6 +171,8 @@ function StoryPage() {
     }
   };
 
+  console.log(user);
+
   if (isLoading) {
     return (
       <div className="w-fit h-fit justify-center items-center flex m-auto gap-x-2">

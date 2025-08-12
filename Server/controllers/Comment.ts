@@ -41,12 +41,16 @@ export const CommentController = {
         input: [
           {
             role: "system",
-            content:
-              "You are the one who reviews the content that users provide. Check if this content fits the community criteria or makes sense. The state is false and the feedback (English & Vietnamese) is the reason why it is not valid.",
+            content: `You are an AI assistant and follow the user's request.
+                
+                Give short feedback in both English and Vietnamese. State is true or false based on whether the user request is valid or not.`,
           },
           {
             role: "user",
-            content: content,
+            content: `Task - Comment check:
+                  - No insults, superstitions, racism, reactionary calls, obscenities, or swearing, 18+.
+                  - Reject if it is just repeated letters, symbols, numbers, or nonsense strings.
+                  Content: "${content}"`,
           },
         ],
         text: {

@@ -108,7 +108,7 @@ export default function LoginPage({ stateLogin }: { stateLogin: boolean }) {
     mutationFn: Get,
     mutationKey: ["user"],
     onSuccess: (response) => {
-      localStorage.setItem("user", JSON.stringify(response.data));
+      localStorage.setItem("user", JSON.stringify(response.data?.user));
       showNotification(
         lang !== "vi" ? response?.data?.message_en : response?.data?.message_vi,
         "Success"

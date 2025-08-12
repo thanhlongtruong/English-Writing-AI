@@ -43,18 +43,25 @@ export const StoryController = {
 
       let checkTitleAndContentUser: any;
 
-      if ((topic === "Question" || topic === "Câu hỏi") && title !== "") {
+      if (
+        (topic === "Question" || topic === "Câu hỏi") &&
+        title.trim() !== ""
+      ) {
         checkTitleAndContentUser = await openai.responses.parse({
           model: "gpt-4o-mini",
           input: [
             {
               role: "system",
-              content:
-                "You are the one who reviews the content that users provide. Check if this content fits the community criteria or makes sense. The state is false and the feedback (English & Vietnamese) is the reason why it is not valid.",
+              content: `You are an AI assistant and follow the user's request.
+                
+                Give short feedback in both English and Vietnamese. State is true or false based on whether the user request is valid or not.`,
             },
             {
               role: "user",
-              content: title,
+              content: `Task - Content check:
+                  - No insults, superstitions, racism, reactionary calls, obscenities, or swearing, 18+.
+                  - Reject if it is just repeated letters, symbols, numbers, or nonsense strings.
+                  Content: "${title}"`,
             },
           ],
           text: {
@@ -67,29 +74,38 @@ export const StoryController = {
           input: [
             {
               role: "system",
-              content:
-                "You are a content checker and No need to compare title with content. The state is false and the feedback (English & Vietnamese) is the reason why it is not valid.",
+              content: `You are an AI assistant and follow the user's request.
+                
+                Give short feedback in both English and Vietnamese. State is true or false based on whether the user request is valid or not.`,
             },
             {
               role: "user",
-              content: `${
-                title &&
-                `- Check if it fits community criteria or makes sense.: title: ${title}.;`
-              } ${
-                content_vi &&
-                `- No need to compare title with content.${content_vi};`
-              } ${
-                !content_vi &&
-                content_en &&
-                `- No need to compare title with content.Check if it makes sense? or is it insulting or offensive or harmful to the community? and may confuse others about the content of the article and is written in English: content_en: ${content_en};`
-              } ${
-                content_vi &&
-                content_en &&
-                `- No need to compare title with content.Check if the meaning of content_en is similar to content_vi and is written in English: content_en: ${content_en}.`
-              } ${
-                title &&
-                `- And the title does not necessarily match the content, it is just a title.`
-              }`,
+              content:
+                title && title.trim() !== ""
+                  ? `Task 1 - Title check:
+                  - Must be meaningful in either English or Vietnamese.
+                  - No insults, superstitions, racism, reactionary calls, obscenities, or swearing, 18+.
+                  - Reject if it is just repeated letters, symbols, numbers, or nonsense strings.
+                  Title: "${title}"`
+                  : "",
+            },
+            {
+              role: "user",
+              content: content_en
+                ? `Task 2 - English check:
+                - Must be fully in English.
+                - No insults, superstitions, racism, reactionary calls, obscenities, or swearing, 18+
+                - Reject if written in any other language or nonsense.
+                content_en: "${content_en}"`
+                : "",
+            },
+            {
+              role: "user",
+              content: content_vi
+                ? `Task 3 - Translation match:
+                    - content_en must be translated into English according to content_vi. content_en may differ in wording but the meaning must be similar to content_vi.
+                    content_vi: "${content_vi}"`
+                : "",
             },
           ],
           text: {
@@ -97,6 +113,9 @@ export const StoryController = {
           },
         });
       }
+
+      console.log(checkTitleAndContentUser);
+
       if (checkTitleAndContentUser?.output_parsed?.state) {
         const story = new Story({
           topic,
