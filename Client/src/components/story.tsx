@@ -88,7 +88,7 @@ function StoryPage() {
 
   const mutationPostComment = useMutation({
     mutationFn: postComment,
-    onSuccess: (data) => {
+    onSuccess: (_) => {
       queryClient.invalidateQueries({
         queryKey: ["comments", isCommentStoryId],
       });

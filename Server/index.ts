@@ -18,11 +18,7 @@ const app = express();
 
 app.use(
   cors({
-    origin: [
-      "http://localhost:5173",
-      "https://english-writing-fruit-v1.vercel.app",
-      "https://english-writing-fruit-v1.vercel.app/",
-    ],
+    origin: process.env.CLIENT_URL,
     credentials: true,
   })
 );
