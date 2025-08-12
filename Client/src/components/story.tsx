@@ -65,10 +65,10 @@ function StoryPage() {
   const { isLoading, data: stories } = useQuery({
     queryKey: ["stories"],
     queryFn: getStories,
-    refetchOnWindowFocus: true,
+    refetchOnWindowFocus: false,
     retry: false,
     placeholderData: keepPreviousData,
-    staleTime: 1000 * 60 * 5,
+    staleTime: 1000 * 60 * 10,
   });
 
   const funcTryWriting = (story: any) => {
@@ -80,7 +80,7 @@ function StoryPage() {
     queryKey: ["comments", isCommentStoryId],
     queryFn: () => getComments(isCommentStoryId),
     enabled: isCommentStoryId !== "",
-    staleTime: 1000 * 60 * 5,
+    staleTime: 1000 * 60 * 10,
     retry: false,
     placeholderData: keepPreviousData,
     refetchOnWindowFocus: false,
@@ -216,7 +216,13 @@ function StoryPage() {
                 setShowPopupPostStory(true);
               }}
               className="text-zinc-400 break-words h-fit cursor-text w-full">
-              {lang !== "vi" ? "New post?" : "Bài viết mới?"}
+              {user
+                ? lang !== "vi"
+                  ? "New post?"
+                  : "Bài viết mới?"
+                : lang !== "vi"
+                ? "Please login to post"
+                : "Vui lòng đăng nhập để đăng bài"}
             </p>
           </div>
 
@@ -229,7 +235,13 @@ function StoryPage() {
               setShowPopupPostStory(true);
             }}
             className="text-black hover:text-sky-400 border whitespace-nowrap border-zinc-200 hover:border-sky-400 rounded-md font-medium bg-white md:py-2 py-1 md:px-4 px-2 cursor-pointer">
-            {lang !== "vi" ? "Post" : "Đăng bài"}
+            {user
+              ? lang !== "vi"
+                ? "Post"
+                : "Đăng bài"
+              : lang !== "vi"
+              ? "Please login to post"
+              : "Vui lòng đăng nhập để đăng bài"}
           </button>
         </div>
 

@@ -22,7 +22,6 @@ function Header() {
   const funcLogout = () => {
     localStorage.removeItem("accessToken");
     localStorage.removeItem("user");
-    navigate("/");
   };
 
   const handleClickLogin = () => {
