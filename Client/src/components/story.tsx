@@ -215,7 +215,9 @@ function StoryPage() {
                 setDataEditStory(null);
                 setShowPopupPostStory(true);
               }}
-              className="text-zinc-400 break-words h-fit cursor-text w-full">
+              className={`break-words h-fit cursor-text w-full ${
+                user ? "text-zinc-400" : "text-red-500 font-medium"
+              }`}>
               {user
                 ? lang !== "vi"
                   ? "New post?"
@@ -235,13 +237,7 @@ function StoryPage() {
               setShowPopupPostStory(true);
             }}
             className="text-black hover:text-sky-400 border whitespace-nowrap border-zinc-200 hover:border-sky-400 rounded-md font-medium bg-white md:py-2 py-1 md:px-4 px-2 cursor-pointer">
-            {user
-              ? lang !== "vi"
-                ? "Post"
-                : "Đăng bài"
-              : lang !== "vi"
-              ? "Please login to post"
-              : "Vui lòng đăng nhập để đăng bài"}
+            {lang !== "vi" ? "Post" : "Đăng bài"}
           </button>
         </div>
 
