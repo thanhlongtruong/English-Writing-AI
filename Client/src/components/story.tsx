@@ -216,7 +216,9 @@ function StoryPage() {
                 setShowPopupPostStory(true);
               }}
               className={`break-words h-fit cursor-text w-full ${
-                user ? "text-zinc-400" : "text-red-500 font-medium"
+                user
+                  ? "text-zinc-400 text-base"
+                  : "text-red-500 font-medium md:text-base text-sm"
               }`}>
               {user
                 ? lang !== "vi"
@@ -228,17 +230,19 @@ function StoryPage() {
             </p>
           </div>
 
-          <button
-            onClick={() => {
-              if (!user) {
-                return;
-              }
-              setDataEditStory(null);
-              setShowPopupPostStory(true);
-            }}
-            className="text-black hover:text-sky-400 border whitespace-nowrap border-zinc-200 hover:border-sky-400 rounded-md font-medium bg-white md:py-2 py-1 md:px-4 px-2 cursor-pointer">
-            {lang !== "vi" ? "Post" : "Đăng bài"}
-          </button>
+          {user && (
+            <button
+              onClick={() => {
+                if (!user) {
+                  return;
+                }
+                setDataEditStory(null);
+                setShowPopupPostStory(true);
+              }}
+              className="text-black hover:text-sky-400 border whitespace-nowrap border-zinc-200 hover:border-sky-400 rounded-md font-medium bg-white md:py-2 py-1 md:px-4 px-2 cursor-pointer">
+              {lang !== "vi" ? "Post" : "Đăng bài"}
+            </button>
+          )}
         </div>
 
         {stories ? (
